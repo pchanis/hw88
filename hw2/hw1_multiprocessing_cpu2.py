@@ -46,7 +46,9 @@ def create_file(file_name,line_cnt=10,column_cnt=3):
 
 
 def f():
-    24987520948750298475*204958204958209458209458/98794857394857934875938475938475934857934875934857
+    pr = 213123  # generates some load
+    pr * pr
+    pr = pr + 1
 
 
 def cpu_intensive():
