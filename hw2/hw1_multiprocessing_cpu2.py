@@ -4,6 +4,7 @@ import Queue
 import threading
 import time
 from multiprocessing import Process, Pool
+import re
 
 COLUMN_SEPARATOR = " "
 NEW_LINE_CHAR = "\n"
@@ -46,9 +47,9 @@ def create_file(file_name,line_cnt=10,column_cnt=3):
 
 
 def f():
-    pr = 213123  # generates some load
-    pr * pr
-    pr = pr + 1
+
+    regex = r"[A-z]{1,2}[0-9R][0-9A-Z]? [0-9][ABD-HJLNP-UW-Z]{2}"
+    compiled_re = re.compile(regex)
 
 
 def cpu_intensive():
