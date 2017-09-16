@@ -55,7 +55,8 @@ def f():
 def cpu_intensive():
     while 1:
         time.sleep(0.001)
-        f()
+        regex = r"[A-z]{1,2}[0-9R][0-9A-Z]? [0-9][ABD-HJLNP-UW-Z]{2}"
+        compiled_re = re.compile(regex)
 
 
 processes=[]
