@@ -4,6 +4,7 @@ import Queue
 import threading
 import time
 from multiprocessing import Process
+import collections
 
 COLUMN_SEPARATOR = " "
 NEW_LINE_CHAR = "\n"
