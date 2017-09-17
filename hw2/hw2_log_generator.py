@@ -4,7 +4,8 @@ import Queue
 import threading
 import time
 from multiprocessing import Process
-import collections
+from collections import defaultdict
+import datetime
 
 COLUMN_SEPARATOR = " "
 NEW_LINE_CHAR = "\n"
@@ -24,29 +25,23 @@ outfile = parsed_args.outfile
 user_count = parsed_args.user_count
 events_per_user_url = parsed_args.event_count_user_url
 url_list_file = parsed_args.url_file
+thread_count = parsed_args.thread_count
 
-def generate_event_record():
-    line_val = ""
-    for column_no in range(column_count):
-        if column_no != column_count-1:
-            line_val += str(randint(0,9)) + COLUMN_SEPARATOR
-        else:
-            line_val += str(randint(0,9))
-    return line_val
-
-def create_event_log_file(file_name,line_cnt=10,column_cnt=3):
-    file_to_process = open(file_name,"w")
-    for line_number in range(line_cnt):
-        if line_number != line_cnt-1:
-            file_to_process.write(get_random_line_entries(column_cnt)+NEW_LINE_CHAR)
-        else:
-            file_to_process.write(get_random_line_entries(column_cnt))
-    file_to_process.close()
+def create_event_log_file(process_id):
+    event_log_file = open(str(process_id) + "_" + outfile + ".txt","w")
+    with open(url_list_file,"r") as urls:
+        for url in urls:
+            url = url.strip()
+            for user_number in range(user_count):
+                user_name = "usr" + str(user_number)
+                for event_num in range(events_per_user_url):
+                    currentTime = str(datetime.datetime.now())
+                    event_log_file.write(url + COLUMN_SEPARATOR + user_name + COLUMN_SEPARATOR + currentTime + NEW_LINE_CHAR)
+    event_log_file.close()
 
 jobs=[]
-for file_count_id in range(file_count):
-    file_name_with_suffix = file_to_process+str(file_count_id)
-    p = Process(target=create_file(file_name_with_suffix,line_count,column_count))
+for process_id in range(thread_count):
+    p = Process(target=create_event_log_file, args=process_id)
     jobs.append(p)
     p.start()
 
