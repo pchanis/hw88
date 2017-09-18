@@ -3,8 +3,8 @@ from random import randint
 import Queue
 import threading
 import time
-from multiprocessing import Process, Manager
-from multiprocessing.managers import BaseManager, DictProxy
+from multiprocessing import Process
+import threading
 from collections import defaultdict
 import datetime
 
@@ -22,14 +22,7 @@ parsed_args = parser.parse_args()
 logfile = parsed_args.logfile
 logfile_count = parsed_args.logfile_count
 
-class MyManager(BaseManager):
-    pass
-
-MyManager.register('defaultdict', defaultdict, DictProxy)
-
-mgr = MyManager()
-mgr.start()
-click_count_by_url_user = mgr.defaultdict(dict)
+click_count_by_url_user = defaultdict(dict)
  
 
 def process_log(process_id):
@@ -45,9 +38,9 @@ def process_log(process_id):
 
 jobs=[]
 for process_id in range(logfile_count):
-    p = Process(target=process_log, args=str(process_id))
-    jobs.append(p)
-    p.start()
+    t = threading.Thread(target=process_log, args=str(process_id))
+    jobs.append(t)
+    t.start()
 
 for curr_job in jobs:
     curr_job.join()
