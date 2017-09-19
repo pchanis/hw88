@@ -28,8 +28,8 @@ url_list_file = parsed_args.url_file
 thread_count = parsed_args.thread_count
 
 
-def create_event_log_file(process_id):
-    event_log_file = open(str(process_id) + "_" + outfile,"w")
+def create_event_log_file(log_file):
+    event_log_file = open(log_file,"w")
     with open(url_list_file,"r") as urls:
         for url in urls:
             url = url.strip()
@@ -37,13 +37,13 @@ def create_event_log_file(process_id):
                 user_name = "usr" + str(user_number)
                 for event_num in range(events_per_user_url):
                     currentTime = str(datetime.datetime.now())
-                    #event_log_file.write(url + COLUMN_SEPARATOR + user_name + COLUMN_SEPARATOR + currentTime + NEW_LINE_CHAR)
                     event_log_file.write(currentTime + COLUMN_SEPARATOR + url + COLUMN_SEPARATOR + user_name +NEW_LINE_CHAR)
     event_log_file.close()
 
 jobs=[]
 for process_id in range(thread_count):
-    p = Process(target=create_event_log_file, args=str(process_id))
+    logfilename = str(process_id) + "_" + outfile
+    p = Process(target=create_event_log_file, args=(logfilename,))
     jobs.append(p)
     p.start()
 

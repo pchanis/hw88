@@ -73,7 +73,7 @@ def query_results():
 
 jobs=[]
 for process_id in range(logfile_count):
-    t = threading.Thread(target=process_log, args=str(process_id))
+    t = threading.Thread(target=process_log, args=(str(process_id),))
     jobs.append(t)
 
 for job in jobs:
