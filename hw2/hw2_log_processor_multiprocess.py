@@ -27,10 +27,6 @@ class MyManager(BaseManager):
 
 MyManager.register('defaultdict', defaultdict, DictProxy)
 
-mgr = MyManager()
-mgr.start()
-click_count_by_url_user = mgr.defaultdict(dict)
- 
 
 def process_log(process_id):
     logfile_name = process_id + "_" + logfile
@@ -43,7 +39,19 @@ def process_log(process_id):
             else:
                 click_count_by_url_user[values[0]][values[1]] += 1
 
+def pretty(d, indent=0):
+   for key, value in d.iteritems():
+      print '\t' * indent + str(key)
+      if isinstance(value, dict):
+         pretty(value, indent+1)
+      else:
+         print '\t' * (indent+1) + str(value)
+
+
 jobs=[]
+mgr = MyManager()
+mgr.start()
+click_count_by_url_user = mgr.defaultdict(dict)
 for process_id in range(logfile_count):
     p = Process(target=process_log, args=str(process_id))
     jobs.append(p)
@@ -53,7 +61,7 @@ for curr_job in jobs:
     curr_job.join()
 
 print "log processing complete"
-print click_count_by_url_user
+
 
 
 
