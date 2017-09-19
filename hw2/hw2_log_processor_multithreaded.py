@@ -24,7 +24,7 @@ logfile = parsed_args.logfile
 logfile_count = parsed_args.logfile_count
 
 click_count_by_url_user = defaultdict(dict)
- 
+lock = threading.RLock()
 
 def process_log(process_id):
     logfile_name = process_id + "_" + logfile
@@ -34,10 +34,12 @@ def process_log(process_id):
             values = event.split(" ")
             url = values[2]
             userid = values[3]
+            lock.acquire()
             if userid not in click_count_by_url_user[url]:
                 click_count_by_url_user[url][userid] = 1
             else:
                 click_count_by_url_user[url][userid] += 1
+            lock.release()
 
 
 def count_unique_urls():
