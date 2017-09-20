@@ -13,7 +13,7 @@ NEW_LINE_CHAR = "\n"
 TAB_CHAR = "\t"
 
 prog = "hw2_4"
-desc = "Generate test log files of the form <timestamp> <userid> <url>"
+desc = "Calculate click counts metrics from raw input log files"
 
 parser = argparse.ArgumentParser(prog=prog, description=desc)
 parser.add_argument('--logfile','-lf',default='events.txt')
@@ -25,6 +25,7 @@ logfile_count = parsed_args.logfile_count
 
 list_dicts = []
 
+#process the raw input files
 def process_log(process_id, process_dict):
     logfile_name = process_id + "_" + logfile
     with open(logfile_name,"r") as events:
@@ -38,7 +39,7 @@ def process_log(process_id, process_dict):
             else:
                 process_dict[url][userid] += 1
 
-
+#Calculate for query 1
 def count_unique_urls():
     urls = []
     for d in list_dicts:
@@ -46,7 +47,7 @@ def count_unique_urls():
     unique_urls = set(urls)
     return len(unique_urls)
 
-
+#Calcualte for query 2
 def count_unique_visitors_by_url():
     users_by_url = defaultdict(list)
     for d in list_dicts:
@@ -57,7 +58,7 @@ def count_unique_visitors_by_url():
         users_by_url[k] = set(users_by_url[k])
         print k + TAB_CHAR + str(len(users_by_url[k]))
 
-
+#Calculate query 3
 def count_unique_userid_clicks_by_url():
     count_unique_clicks_by_user_by_url = defaultdict(dict)
     for d in list_dicts:
@@ -86,9 +87,10 @@ def query_results():
     count_unique_userid_clicks_by_url()
 
 
+#set up the separate threads
 jobs=[]
 for process_id in range(logfile_count):
-    list_dicts.append(defaultdict(dict))
+    list_dicts.append(defaultdict(dict)) #add a dictionary for each thread
     t = threading.Thread(target=process_log, args=(str(process_id), list_dicts[process_id]))
     jobs.append(t)
 
@@ -99,8 +101,8 @@ for curr_job in jobs:
     curr_job.join()
 
 print "log processing complete"
-#print list_dicts
-#print len(list_dicts)
+
+#calculate and print the query results
 query_results()
 
 
