@@ -5,7 +5,7 @@ import threading
 import time
 from multiprocessing import Process
 import threading
-from collections import defaultdict
+from collections import defaultdict, Counter
 import datetime
 
 COLUMN_SEPARATOR = " "
@@ -59,11 +59,19 @@ def count_unique_visitors_by_url():
 
 
 def count_unique_userid_clicks_by_url():
-    users_by_url = defaultdict(list)
+    count_unique_clicks_by_user_by_url = defaultdict(dict)
     for d in list_dicts:
         for k in d.keys():
-            for u in d[k]:
-                users_by_url[k].append(u)
+            for u,v in d[k].items():
+                if u not in count_unique_clicks_by_user_by_url[k]:
+                    count_unique_clicks_by_user_by_url[k][u] = v
+                else:
+                    count_unique_clicks_by_user_by_url[k][u] += v
+    for k in count_unique_clicks_by_user_by_url.keys():
+         print k + ":"
+         for u,v in count_unique_clicks_by_user_by_url[k].items():
+             print u + TAB_CHAR + str(v)
+
 
 def query_results():
     #Query 1
@@ -74,8 +82,8 @@ def query_results():
     count_unique_visitors_by_url()
 
     #Query 3
-    #print "Query 3: unique user click counts by URL:"
-    #count_unique_userid_clicks_by_url()
+    print "Query 3: unique user click counts by URL:"
+    count_unique_userid_clicks_by_url()
 
 
 jobs=[]
