@@ -91,6 +91,7 @@ def query_results():
 jobs=[]
 for process_id in range(logfile_count):
     list_dicts.append(defaultdict(dict)) #add a dictionary for each thread
+    #call function to process one log and pass in dictionary
     t = threading.Thread(target=process_log, args=(str(process_id), list_dicts[process_id]))
     jobs.append(t)
 

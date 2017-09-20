@@ -5,6 +5,7 @@ import threading
 import time
 from multiprocessing import Process, Pool
 import re
+import hashlib
 
 COLUMN_SEPARATOR = " "
 NEW_LINE_CHAR = "\n"
@@ -19,6 +20,7 @@ parser = argparse.ArgumentParser(prog=prog, description=desc)
 # parser.add_argument('--column-count','-c',default=3, type=int)
 # parser.add_argument('--file-count','-fc',default=5, type=int)
 parser.add_argument('--thread-count','-tc',default=5, type=int)
+parser.add_argument('--sleep-time','-st', default=0.001, type=float)
 
 parsed_args = parser.parse_args()
 # file_to_process = parsed_args.file
@@ -26,6 +28,7 @@ parsed_args = parser.parse_args()
 # column_count = parsed_args.column_count
 # file_count = parsed_args.file_count
 thread_count = parsed_args.thread_count
+sleep_time = parsed_args.sleep_time
 
 def get_random_line_entries(column_count=3):
     line_val = ""
@@ -51,12 +54,17 @@ def f():
     regex = r"[A-z]{1,2}[0-9R][0-9A-Z]? [0-9][ABD-HJLNP-UW-Z]{2}"
     compiled_re = re.compile(regex)
 
+def md5(fname):
+    hash_md5 = hashlib.md5()
+    with open(fname, "rb") as f:
+        for chunk in iter(lambda: f.read(4096), b""):
+            hash_md5.update(chunk)
+
 
 def cpu_intensive():
     while 1:
-        time.sleep(0.0001)
-        regex = r"[A-z]{1,2}[0-9R][0-9A-Z]? [0-9][ABD-HJLNP-UW-Z]{2}"
-        compiled_re = re.compile(regex)
+        time.sleep(sleep_time)
+        md5("file.txt")
 
 
 processes=[]
