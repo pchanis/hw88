@@ -23,17 +23,13 @@ parser.add_argument('--thread-count','-tc',default=5, type=int)
 parser.add_argument('--read_file','-rf', default="file.txt")
 
 parsed_args = parser.parse_args()
-# file_to_process = parsed_args.file
-# line_count = parsed_args.line_count
-# column_count = parsed_args.column_count
-# file_count = parsed_args.file_count
 thread_count = parsed_args.thread_count
 read_file = parsed_args.read_file
 
 
 def io_intensive(proc_id):
     while 1:
-        with open(read_file, "r") as in_file, open(read_file + "copy" + proc_id,"w") as write_file:
+        with open(read_file, "r") as in_file, open(read_file + "copy" + str(proc_id),"w") as write_file:
             time.sleep(0.001)
             for line in in_file:
                 write_file.write(line)
