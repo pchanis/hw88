@@ -20,7 +20,7 @@ parser = argparse.ArgumentParser(prog=prog, description=desc)
 # parser.add_argument('--column-count','-c',default=3, type=int)
 # parser.add_argument('--file-count','-fc',default=5, type=int)
 parser.add_argument('--thread-count','-tc',default=5, type=int)
-parser.add_argument('--read_file','-rf')
+parser.add_argument('--read_file','-rf', default="file.txt")
 
 parsed_args = parser.parse_args()
 # file_to_process = parsed_args.file
@@ -49,21 +49,9 @@ def create_file(file_name,line_cnt=10,column_cnt=3):
     file_to_process.close()
 
 
-def f():
-
-    regex = r"[A-z]{1,2}[0-9R][0-9A-Z]? [0-9][ABD-HJLNP-UW-Z]{2}"
-    compiled_re = re.compile(regex)
-
-
-def cpu_intensive():
-    while 1:
-        time.sleep(0.001)
-        regex = r"[A-z]{1,2}[0-9R][0-9A-Z]? [0-9][ABD-HJLNP-UW-Z]{2}"
-        compiled_re = re.compile(regex)
-
 def io_intensive():
     while 1:
-        with open(read_file) as in_file:
+        with open(read_file, "r") as in_file:
             time.sleep(0.001)
             for line in in_file:
                 pass
