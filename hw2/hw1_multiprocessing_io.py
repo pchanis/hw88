@@ -11,7 +11,7 @@ COLUMN_SEPARATOR = " "
 NEW_LINE_CHAR = "\n"
 
 prog = "hw2_1a"
-desc = "Run multiple cpu-intensive processes"
+desc = "Run multiple io-intensive processes"
 
 parser = argparse.ArgumentParser(prog=prog, description=desc)
 
@@ -31,8 +31,8 @@ def io_intensive(proc_id):
     rf = open(read_file,"r")
     wf = open(read_file+"copy"+str(proc_id),"w")
     while 1:
+        time.sleep(0.001)
         for line in rf.readline():
-            time.sleep(0.001)
             wf.write(line)
 
 processes=[]
