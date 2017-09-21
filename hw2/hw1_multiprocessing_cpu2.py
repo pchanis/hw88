@@ -64,7 +64,7 @@ def md5(fname):
 def cpu_intensive():
     while 1:
         time.sleep(sleep_time)
-        md5("file.txt")
+        md5("cpu_file.txt")
 
 
 processes=[]
