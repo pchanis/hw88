@@ -28,12 +28,12 @@ read_file = parsed_args.read_file
 
 
 def io_intensive(proc_id):
+    rf = open(read_file,"r")
+    wf = open(read_file+"copy"+str(proc_id),"w")
     while 1:
-        with open(read_file, "r") as in_file, open(read_file + "copy" + str(proc_id),"w") as write_file:
-            for line in in_file:
-                time.sleep(0.001)
-                write_file.write(line)
-
+        for line in rf.readline():
+            time.sleep(0.001)
+            wf.write(line)
 
 processes=[]
 for process_count_id in range(process_count):
