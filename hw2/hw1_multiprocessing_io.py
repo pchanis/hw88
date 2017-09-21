@@ -30,36 +30,19 @@ parsed_args = parser.parse_args()
 thread_count = parsed_args.thread_count
 read_file = parsed_args.read_file
 
-def get_random_line_entries(column_count=3):
-    line_val = ""
-    for column_no in range(column_count):
-        if column_no != column_count-1:
-            line_val += str(randint(0,9)) + COLUMN_SEPARATOR
-        else:
-            line_val += str(randint(0,9))
-    return line_val
 
-def create_file(file_name,line_cnt=10,column_cnt=3):
-    file_to_process = open(file_name,"w")
-    for line_number in range(line_cnt):
-        if line_number != line_cnt-1:
-            file_to_process.write(get_random_line_entries(column_cnt)+NEW_LINE_CHAR)
-        else:
-            file_to_process.write(get_random_line_entries(column_cnt))
-    file_to_process.close()
-
-
-def io_intensive():
+def io_intensive(proc_id):
     while 1:
-        with open(read_file, "r") as in_file:
+        with open(read_file, "r") as in_file, open(read_file + "copy" + proc_id,"w") as write_file:
             time.sleep(0.001)
             for line in in_file:
-                pass
+                write_file.write(line)
+
 
 
 processes=[]
 for thread_count_id in range(thread_count):
-    p = Process(target=io_intensive)
+    p = Process(target=io_intensive, args=(thread_count,))
     p.start()
     processes.append(p)
 
