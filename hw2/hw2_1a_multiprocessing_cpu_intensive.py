@@ -15,7 +15,7 @@ desc = "Generate multiprocess cpu intensive load by calculating md5 on a file"
 
 parser = argparse.ArgumentParser(prog=prog, description=desc)
 parser.add_argument('--thread-count','-tc',default=5, type=int)
-parser.add_argument('--sleep-time','-st', default=0.001, type=float)
+parser.add_argument('--sleep-time','-st', default=0.015, type=float)
 
 parsed_args = parser.parse_args()
 thread_count = parsed_args.thread_count
@@ -37,7 +37,7 @@ def cpu_intensive():
 
 processes=[]
 for thread_count_id in range(thread_count):
-    p = Process(target=cpu_intensive)
+    p = threading.Thread(target=cpu_intensive)
     p.start()
     processes.append(p)
 
