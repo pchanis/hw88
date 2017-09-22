@@ -37,7 +37,7 @@ def cpu_intensive():
 
 processes=[]
 for thread_count_id in range(thread_count):
-    p = threading.Thread(target=cpu_intensive)
+    p = Process(target=cpu_intensive)
     p.start()
     processes.append(p)
 
