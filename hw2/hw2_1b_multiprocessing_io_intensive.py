@@ -27,7 +27,7 @@ def io_intensive(proc_id):
     rf = open(read_file,"r")
     wf = open(read_file+"copy"+str(proc_id),"w")
     while 1:
-        time.sleep(0.001)
+        time.sleep(0.015)
         for line in rf.readline():
             wf.write(line)
 
