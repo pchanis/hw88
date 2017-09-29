@@ -1,18 +1,18 @@
 import argparse
 from random import randint
 import Queue
-import threading
 import time
 from multiprocessing import Process
 import threading
-from collections import defaultdict, Counter
+from collections import defaultdict
 import datetime
+
 
 COLUMN_SEPARATOR = " "
 NEW_LINE_CHAR = "\n"
 TAB_CHAR = "\t"
 
-prog = "hw2_4_log_processor"
+prog = "hw2_4"
 desc = "Calculate click counts metrics from raw input log files"
 
 parser = argparse.ArgumentParser(prog=prog, description=desc)
@@ -39,7 +39,7 @@ def process_log(process_id, process_dict):
             else:
                 process_dict[url][userid] += 1
 
-# Calculate for query 1
+#Calculate for query 1
 def count_unique_urls():
     urls = []
     for d in list_dicts:
@@ -47,7 +47,7 @@ def count_unique_urls():
     unique_urls = set(urls)
     return len(unique_urls)
 
-# Calcualte for query 2
+#Calcualte for query 2
 def count_unique_visitors_by_url():
     users_by_url = defaultdict(list)
     for d in list_dicts:
@@ -58,7 +58,7 @@ def count_unique_visitors_by_url():
         users_by_url[k] = set(users_by_url[k])
         print k + TAB_CHAR + str(len(users_by_url[k]))
 
-# Calculate query 3
+#Calculate query 3
 def count_unique_userid_clicks_by_url():
     count_unique_clicks_by_user_by_url = defaultdict(dict)
     for d in list_dicts:
